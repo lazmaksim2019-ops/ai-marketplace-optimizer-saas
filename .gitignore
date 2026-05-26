@@ -1,0 +1,15 @@
+.env
+backend/.env
+node_modules/
+dist/
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+*.log
+backend/*_test*.txt
+backend/*_stdout*.txt
+backend/*_stderr*.txt
+.DS_Store
+frontend/src/assets/
