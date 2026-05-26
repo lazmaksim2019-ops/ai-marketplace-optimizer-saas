@@ -10,7 +10,7 @@
 
 # 🚀 AI Marketplace Optimizer (SaaS MVP)
 
-### Интеллектуальная мультимодальная система генерации и SEO-оптимизации карточек товаров для Wildberries и Ozon на базе Gemini 2.0 Flash Lite
+### Интеллектуальная мультимодальная система генерации и SEO-оптимизации карточек товаров для Wildberries и Ozon на базе Gemini
 
 **AI Marketplace Optimizer** — полнофункциональное fullstack-приложение, которое анализирует изображение и текстовое описание товара, а затем генерирует SEO-оптимизированные карточки, адаптированные под требования конкретного маркетплейса. Сервис использует мультимодальные возможности Google Gemini для сквозного анализа визуала и текста в один проход.
 
@@ -86,7 +86,7 @@
 - **httpx** — HTTP-клиент (в т.ч. SOCKS5-прокси)
 
 ### AI
-- **Gemini 2.0 Flash Lite** — быстрая мультимодальная модель
+- **Gemini 3.1 Flash Lite** — быстрая мультимодальная модель
 - Формат ответа: `response_mime_type="application/json"`
 
 ---
@@ -184,7 +184,7 @@ MIT
 
 ## 👨‍💻 Автор
 
-**Ваше Имя** — проект для портфолио Fullstack Developer (React + FastAPI + AI)
+**Александр Лазаренко** — проект для портфолио Fullstack Developer (React + FastAPI + AI)
 
 [![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/your_nickname)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username)
