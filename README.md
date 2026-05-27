@@ -184,7 +184,7 @@ MIT
 
 ## 👨‍💻 Автор
 
-**Александр Лазаренко** — проект для портфолио Fullstack Developer (React + FastAPI + AI)
+**Александр Лазаренко** — проект Fullstack Developer (React + FastAPI + AI)
 
 [![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/your_nickname)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username)
