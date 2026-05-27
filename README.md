@@ -1,10 +1,15 @@
+<p align="center">
+  <img src="ai_optimizer_card.png" alt="AI Marketplace Optimizer" width="800"/>
+</p>
 
-![Project Banner](https://img.shields.io/badge/Status-Ready%20for%20Production-success?style=for-the-badge)
-![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Gemini](https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white)
-![Tailwind](https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white)
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Ready%20for%20Production-success?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
+</p>
 
 ---
 
@@ -95,14 +100,16 @@
 
 ### 1. Клонирование
 ```bash
-git clone https://github.com/your-username/ai-marketplace-optimizer.git
-cd ai-marketplace-optimizer
+git clone https://github.com/lazmaksim2019-ops/AI-Marketplace-Optimizer-SaaS-MVP-.git
+cd AI-Marketplace-Optimizer-SaaS-MVP-
 ```
 
 ### 2. Бэкенд
 ```bash
 cd backend
-python -m venv .venv && source .venv/bin/activate  # или .venv\Scripts\activate на Windows
+python -m venv .venv
+.venv\Scripts\activate      # Windows
+# source .venv/bin/activate  # Linux/Mac
 pip install -r requirements.txt
 ```
 
@@ -118,7 +125,7 @@ PROXY_PASS=your_proxy_pass
 
 Запуск:
 ```bash
-python -m uvicorn main:app --reload --port 8000
+uvicorn main:app --reload --port 8000
 ```
 
 ### 3. Фронтенд
