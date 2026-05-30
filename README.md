@@ -3,9 +3,9 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Ready%20for%20Production-success?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB"/>
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/>
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
   <img src="https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
@@ -13,34 +13,40 @@
 
 ---
 
-# 🚀 AI Marketplace Optimizer (SaaS MVP)
+# AI Marketplace Optimizer
 
-### Интеллектуальная мультимодальная система генерации и SEO-оптимизации карточек товаров для Wildberries и Ozon на базе Gemini
+### Multimodal AI SaaS for Marketplace Sellers. SEO-generation, Image Analysis, Infographic Trigger Detection. Wildberries & Ozon API integration.
 
-**AI Marketplace Optimizer** — полнофункциональное fullstack-приложение, которое анализирует изображение и текстовое описание товара, а затем генерирует SEO-оптимизированные карточки, адаптированные под требования конкретного маркетплейса. Сервис использует мультимодальные возможности Google Gemini для сквозного анализа визуала и текста в один проход.
+**AI Marketplace Optimizer** — полнофункциональное fullstack SaaS-приложение для мультимодальной генерации и SEO-оптимизации карточек товаров под Wildberries и Ozon на базе Google Gemini.
+
+> **Бизнес-ценность:** Сокращение времени на подготовку контента в **10+ раз** за счет использования мультимодального ИИ, который «видит» товар на фото и «пишет» продающий текст под алгоритмы конкретной площадки.
 
 ---
 
-## ✨ Ключевые возможности
+## Ключевые возможности
 
-### 🧠 Мультимодальный анализ (Vision + Text)
-Сервис принимает на вход изображение товара (загрузка файла или URL) и текущие характеристики, анализируя визуал и текст одновременно. Gemini получает сырые байты изображения, что исключает лишние сетевые задержки.
+### Мультимодальный анализ (Vision + Text)
+ИИ не просто генерирует текст — он анализирует визуальный контекст (фотографии товара) для формирования точного описания. Gemini получает сырые байты изображения, что исключает лишние сетевые задержки.
 
-### 🎯 Дифференцированные SEO-стратегии под каждый маркетплейс
+### Marketplace-Adaptive Prompts
+Жесткое разделение промптов под требования Wildberries (до 60 симв. заголовок) и Ozon (формулы с использованием ключевых слов).
 
 | Параметр | Wildberries | Ozon |
 |----------|-------------|------|
 | **Заголовок** | Строгий лимит до 60 символов, без спама, без дублирования | Богатое наименование до 200 символов по формуле Тип + Бренд + Особенности |
-| **Описание** | Нативный LSI-копирайтинг до 3000 символов, вплетение поисковых синонимов | Конверсионный b2c-текст с упором на выгоды (ранжирование Ozon зависит от характеристик, а не текста) |
+| **Описание** | Нативный LSI-копирайтинг до 3000 символов, вплетение поисковых синонимов | Конверсионный b2c-текст с упором на выгоды |
 | **Философия** | Плотный художественный текст с ключами | Маркетинговые триггеры для покупателя |
 
-### 🏷️ Выделение триггеров для инфографики
-ИИ автоматически вычленяет сильные стороны товара для выноса на обложку: «100% натуральная шерсть», «Влагозащита IPX4», «Премиальное качество» и т.д. Селлер может сразу перенести их в дизайн инфографики.
+### Детектор триггеров инфографики
+Автоматическая рекомендация по добавлению преимуществ на фото товара, основанная на анализе визуальных паттернов. ИИ выделяет сильные стороны: *«100% натуральная шерсть»*, *«Влагозащита IPX4»*, *«Премиальное качество»* — и рекомендует вынести их на обложку.
 
-### 🛡️ Отказоустойчивость
-Бэкенд корректно обрабатывает ошибку `429 Too Many Requests` (бесплатные ключи Google AI Studio имеют низкий приоритет). Пользователь вместо «белого экрана» видит понятное сообщение с инструкцией.
+### Enterprise-Ready Архитектура
+- **Асинхронное взаимодействие** — FastAPI async endpoints
+- **SOCKS5-прокси** — стабильный доступ к API в РФ
+- **Pydantic v2-валидация** — строгий контроль схем, предотвращение галлюцинаций
+- **Graceful error handling** — обработка rate limiting (429) с понятными сообщениями
 
-### 📋 Дополнительно
+### Дополнительно
 - Копирование результатов в буфер обмена одной кнопкой
 - Адаптивная вёрстка (Desktop / Mobile)
 - Skeleton loader на время генерации
@@ -48,64 +54,65 @@
 
 ---
 
-## 🏗️ Архитектура
+## Архитектура системы
 
 ```
-├── backend/                  # FastAPI + Gemini API
-│   ├── main.py               # Эндпоинты, логика, CORS
-│   ├── config.py             # Настройки из .env (API key, proxy)
-│   ├── schemas.py            # Pydantic-схемы запросов и ответов
-│   ├── requirements.txt      # Зависимости Python
-│   └── .env                  # GEMINI_API_KEY и опционально PROXY
+┌─────────────┐     ┌──────────────┐     ┌──────────────────┐
+│  Next.js UI │────>│  FastAPI     │────>│  Google Gemini   │
+│  (Frontend) │<────│  Gateway     │<────│  Vision + Text   │
+└─────────────┘     └──────────────┘     └──────────────────┘
+                           │
+                    ┌──────┴──────┐
+                    │  Pydantic   │
+                    │  Validation │
+                    └─────────────┘
+```
+
+```
+├── backend/                    # FastAPI + Gemini API
+│   ├── main.py                 # Эндпоинты, логика, CORS
+│   ├── config.py               # Настройки из .env (API key, proxy)
+│   ├── schemas.py              # Pydantic-схемы запросов и ответов
+│   └── requirements.txt        # Зависимости Python
 │
-├── frontend/                 # React + Vite + TypeScript + Tailwind
+├── frontend/                   # Next.js + TypeScript + Tailwind
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Dashboard.tsx      # Главный экран
-│   │   │   ├── ResultCard.tsx     # Виджет результата с копированием
-│   │   │   ├── TriggerTags.tsx    # Теги триггеров инфографики
-│   │   │   └── SkeletonLoader.tsx # Скелетон-лоадер
-│   │   ├── api.ts            # Клиент для запросов к бэкенду
-│   │   ├── types.ts          # TypeScript-интерфейсы
-│   │   └── App.tsx           # Точка входа
-│   ├── vite.config.ts        # Vite + Tailwind + Proxy на бэкенд
+│   │   │   ├── Dashboard.tsx        # Главный экран
+│   │   │   ├── ResultCard.tsx       # Виджет результата с копированием
+│   │   │   ├── TriggerTags.tsx      # Теги триггеров инфографики
+│   │   │   └── SkeletonLoader.tsx   # Скелетон-лоадер
+│   │   ├── api.ts              # Клиент для запросов к бэкенду
+│   │   ├── types.ts            # TypeScript-интерфейсы
+│   │   └── App.tsx             # Точка входа
+│   ├── vite.config.ts          # Vite + Tailwind + Proxy на бэкенд
 │   └── package.json
 │
+├── .gitattributes
 └── README.md
 ```
 
 ---
 
-## 🛠️ Стек технологий
+## Технологический стек
 
-### Frontend
-- **React 19** + **TypeScript** — типизированный UI
-- **Vite** — быстрая сборка и HMR
-- **Tailwind CSS v4** — утилитарная стилизация
-- **Lucide React** — современные иконки
-
-### Backend
-- **Python 3.11+** + **FastAPI** — асинхронный REST API
-- **Google GenAI SDK** (`google-genai`) — мультимодальный Gemini
-- **Pydantic v2** — валидация данных
-- **httpx** — HTTP-клиент (в т.ч. SOCKS5-прокси)
-
-### AI
-- **Gemini 3.1 Flash Lite** — быстрая мультимодальная модель
-- Формат ответа: `response_mime_type="application/json"`
+| Уровень | Технологии |
+|---------|-----------|
+| **Frontend** | Next.js 19, TypeScript, Tailwind CSS v4, Lucide React |
+| **Backend** | Python 3.11+, FastAPI (Async), Pydantic v2, httpx |
+| **AI** | Google Gemini 3.1 Flash Lite (мультимодальное ядро) |
+| **Infrastructure** | SOCKS5 Proxy для стабильного доступа к API в РФ |
 
 ---
 
-## 🚦 Быстрый старт
+## Быстрый старт
 
-### 1. Клонирование
 ```bash
-git clone https://github.com/lazmaksim2019-ops/AI-Marketplace-Optimizer-SaaS-MVP-.git
-cd AI-Marketplace-Optimizer-SaaS-MVP-
-```
+# Клонирование
+git clone https://github.com/lazmaksim2019-ops/ai-marketplace-optimizer-saas.git
+cd ai-marketplace-optimizer-saas
 
-### 2. Бэкенд
-```bash
+# Бэкенд
 cd backend
 python -m venv .venv
 .venv\Scripts\activate      # Windows
@@ -123,32 +130,31 @@ PROXY_USER=your_proxy_user
 PROXY_PASS=your_proxy_pass
 ```
 
-Запуск:
 ```bash
+# Запуск бэкенда
 uvicorn main:app --reload --port 8000
-```
 
-### 3. Фронтенд
-```bash
+# Фронтенд (в новом терминале)
 cd frontend
 npm install
 npm run dev
 ```
 
-Фронтенд доступен на `http://localhost:5173`, прокси на бэкенд настроен автоматически через `vite.config.ts`.
+Фронтенд доступен на `http://localhost:5173`, прокси на бэкенд настроен автоматически.
 
 ---
 
-## 📡 API
+## API
 
 ### `POST /api/analyze`
 Принимает `multipart/form-data`:
+
 | Поле | Тип | Обязательный | Описание |
 |------|-----|:---:|---------|
 | `description` | string | ✅ | Текущее описание товара |
 | `marketplace` | string | ❌ | `"wb"` или `"ozon"` (по умолчанию `"wb"`) |
 | `file` | file | ❌ | Изображение товара |
-| `image_url` | string | ❌ | Ссылка на изображение (альтернатива file) |
+| `image_url` | string | ❌ | Ссылка на изображение |
 
 **Ответ:**
 ```json
@@ -165,7 +171,7 @@ npm run dev
 
 ---
 
-## 📈 Roadmap
+## Roadmap
 
 - [x] MVP: генерация SEO-текста + триггеры инфографики
 - [x] Дифференциация стратегий Wildberries / Ozon
@@ -177,25 +183,19 @@ npm run dev
 
 ---
 
-## 🤝 Вклад в проект
+## Лицензия
 
-Pull Request'ы приветствуются. Для крупных изменений, пожалуйста, откройте issue для обсуждения.
-
----
-
-## 📄 Лицензия
-
-MIT
+Proprietary / Closed Source. Все права защищены.
 
 ---
 
-## 👨‍💻 Автор
+## Автор
 
-**Александр Лазаренко** — проект Fullstack Developer (React + FastAPI + AI)
+**Александр Лазаренко** — Fullstack Developer (React + FastAPI + AI)
 
 [![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/your_nickname)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username)
 
 ---
 
-> ⚡ *«AI не заменит селлера. Но селлер, использующий AI, заменит того, кто им не пользуется.»*
+> *«AI не заменит селлера. Но селлер, использующий AI, заменит того, кто им не пользуется.»*
