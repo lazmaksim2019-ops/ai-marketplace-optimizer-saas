@@ -89,25 +89,39 @@ class OzonAPI:
 ## Архитектура системы
 
 ```
-┌─────────────┐     ┌──────────────┐     ┌──────────────────┐
-│  React +    │────>│  FastAPI     │────>│  Google Gemini   │
-│  Vite + TS  │<────│  Gateway     │<────│  Vision + Text   │
-│  (Frontend) │     │  (Backend)   │     └──────────────────┘
-└─────────────┘     └──────┬───────┘
-                           │
-                    ┌──────┴──────┐          ┌──────────────────┐
-                    │  Pydantic   │          │  Wildberries API │
-                    │  Validation │──────────│  Ozon Seller API │
-                    └─────────────┘          │  (extensible)    │
-                                            └──────────────────┘
+┌─────────────────────────────────────┐     ┌──────────────────┐
+│  FastAPI (serves React SPA + API)  │────>│  Google Gemini   │
+│  ┌──────────┐  ┌──────────────────┐│<────│  Vision + Text   │
+│  │ Static   │  │  /api/*          ││     └──────────────────┘
+│  │ Files    │  │  analyze health  ││
+│  │ (SPA)    │  │  marketplace     ││
+│  └──────────┘  └────────┬─────────┘│
+└─────────────────────────┼───────────┘
+                          │
+                   ┌──────┴──────┐          ┌──────────────────┐
+                   │  Pydantic   │          │  Wildberries API │
+                   │  Validation │──────────│  Ozon Seller API │
+                   └─────────────┘          │  (extensible)    │
+                                           └──────────────────┘
 ```
 
 ```
 ├── backend/                    # FastAPI + Gemini API
-│   ├── main.py                 # Эндпоинты, логика, CORS
+│   ├── main.py                 # Эндпоинты, логика, CORS, SPA serve
 │   ├── config.py               # Настройки из .env (API key, proxy)
 │   ├── schemas.py              # Pydantic-схемы запросов и ответов
-│   └── requirements.txt        # Зависимости Python
+│   ├── requirements.txt        # Зависимости Python
+│   ├── Dockerfile              # Multi-stage Python slim образ
+│   ├── pyproject.toml          # Ruff + pytest конфиг
+│   ├── tests/                  # 22 теста (API, marketplace, retry)
+│   │   ├── test_api.py
+│   │   ├── test_analyze.py
+│   │   └── test_marketplaces.py
+│   └── marketplaces/           # API-клиенты WB/Ozon с retry
+│       ├── base.py
+│       ├── wb.py
+│       ├── ozon.py
+│       └── schemas.py
 │
 ├── frontend/                   # React + Vite + TypeScript + Tailwind
 │   ├── src/
@@ -120,9 +134,14 @@ class OzonAPI:
 │   │   ├── types.ts            # TypeScript-интерфейсы
 │   │   └── App.tsx             # Точка входа
 │   ├── vite.config.ts          # Vite + Tailwind + Proxy на бэкенд
-│   └── package.json
+│   ├── Dockerfile              # Nginx для production сборки
+│   └── nginx.conf
 │
+├── .github/workflows/ci.yml    # CI: lint + test + docker build
+├── docker-compose.yml          # Бэкенд + Nginx фронтенд
 ├── render.yaml                 # Конфигурация деплоя на Render
+├── Procfile                    # Start command для Render
+├── .env.example
 ├── .gitattributes
 └── README.md
 ```
@@ -180,33 +199,22 @@ npm run dev
 
 Фронтенд доступен на `http://localhost:5173`, прокси на бэкенд настроен автоматически.
 
-### Деплой на Render
+### Деплой на Render (один сервис)
 
-Проект содержит готовую конфигурацию `render.yaml` для деплоя через Render Blueprint:
+Проект содержит готовую конфигурацию `render.yaml` для деплоя через Render Blueprint —
+или деплойте вручную как Web Service:
 
-1. Форкните репозиторий на GitHub
-2. Зайдите в [Render Dashboard](https://dashboard.render.com/)
-3. Нажмите **New → Blueprint**
-4. Подключите GitHub-репозиторий
-5. Render автоматически создаст 2 сервиса:
-   - **Web Service** — FastAPI бэкенд (Python)
-   - **Static Site** — React фронтенд (Vite build)
-6. Укажите `GEMINI_API_KEY` в Environment Variables
+1. Зайдите в [Render Dashboard](https://dashboard.render.com/) → **New + Web Service**
+2. Подключите GitHub-репозиторий
+3. Настройки:
+   - **Name:** `ai-marketplace-optimizer`
+   - **Runtime:** `Python`
+   - **Build Command:** `cd frontend && npm ci && npm run build && cd ../backend && pip install -r requirements.txt`
+   - **Start Command:** `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+4. Добавьте переменную окружения: `GEMINI_API_KEY`
 
-Или деплойте по отдельности (без Blueprint):
-
-**Бэкенд (Web Service):**
-- Repository root: оставьте пустым (или укажите `backend/`)
-- Build: `pip install -r requirements.txt`
-- Start Command: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
-  (Procfile в корне репы настроит это автоматически)
-- Add env: `GEMINI_API_KEY`
-
-**Фронтенд (Static Site):**
-- Repository root: `frontend/`
-- Build: `npm install && npm run build`
-- Publish: `dist`
-- Add env: `VITE_API_URL=https://your-api-service.onrender.com/api`
+Фронтенд (React + Vite) встроен в бэкенд — бэкенд сам отдаёт статику на `GET /`.
+Никаких отдельных сервисов для фронтенда не нужно.
 
 ---
 
