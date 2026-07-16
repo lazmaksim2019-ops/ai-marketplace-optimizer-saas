@@ -14,5 +14,14 @@ ignore = ["E501", "B008"]
 [tool.ruff.lint.per-file-ignores]
 "marketplaces/*.py" = ["ARG002"]
 
+[tool.coverage.run]
+source = ["."]
+omit = ["tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+fail_under = 0
+skip_covered = true
+show_missing = true
+
 [tool.ruff.format]
 quote-style = "double"

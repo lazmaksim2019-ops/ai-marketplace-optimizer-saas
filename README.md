@@ -13,7 +13,12 @@
   <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
   <img src="https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
-  <img src="https://img.shields.io/github/actions/workflow/status/lazmaksim2019-ops/ai-marketplace-optimizer-saas/ci.yml?branch=master&style=for-the-badge&logo=github&label=CI"/>
+  <a href="https://github.com/lazmaksim2019-ops/ai-marketplace-optimizer-saas/actions">
+    <img src="https://img.shields.io/github/actions/workflow/status/lazmaksim2019-ops/ai-marketplace-optimizer-saas/ci.yml?branch=master&style=for-the-badge&logo=github&label=CI"/>
+  </a>
+  <a href="https://codecov.io/gh/lazmaksim2019-ops/ai-marketplace-optimizer-saas">
+    <img src="https://img.shields.io/codecov/c/github/lazmaksim2019-ops/ai-marketplace-optimizer-saas?style=for-the-badge&logo=codecov&label=Coverage"/>
+  </a>
 </p>
 
 ---
@@ -207,7 +212,7 @@ npm run dev
 
 ```bash
 cd backend
-pytest -v --tb=short
+pytest -v --tb=short --cov=app
 ```
 
 ### Деплой на Render (один сервис)
