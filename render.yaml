@@ -1,10 +1,9 @@
 services:
   - type: web
-    name: ai-marketplace-api
+    name: ai-marketplace-optimizer
     runtime: python
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    buildCommand: cd frontend && npm ci && npm run build && cd ../backend && pip install -r requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: GEMINI_API_KEY
         sync: false
@@ -16,13 +15,3 @@ services:
         sync: false
       - key: PROXY_PASS
         sync: false
-
-  - type: web
-    name: ai-marketplace-ui
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_URL
-        value: https://ai-marketplace-api.onrender.com/api

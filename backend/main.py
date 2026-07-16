@@ -1,10 +1,12 @@
 import json
 import logging
 from io import BytesIO
+from pathlib import Path
 
 import httpx
 from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from google import genai
 from google.genai import types
 from PIL import Image
@@ -32,6 +34,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+_frontend_dist = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+_frontend_index = _frontend_dist / "index.html"
+
+if _frontend_dist.is_dir():
+    @app.middleware("http")
+    async def _serve_frontend(request: Request, call_next):
+        response = await call_next(request)
+        if response.status_code != 404:
+            return response
+        file_path = _frontend_dist / request.url.path.lstrip("/")
+        if file_path.is_file():
+            return FileResponse(str(file_path))
+        return FileResponse(str(_frontend_index))
 
 SYSTEM_PROMPT_WB = """Ты — эксперт по SEO-оптимизации карточек товаров для Wildberries.
 Проанализируй изображение товара и его описание. Верни СТРОГО только JSON без пояснений:
@@ -125,16 +141,6 @@ async def _call_ai(
 
     raw = json.loads(response.text)
     return AnalyzeResponse(**raw)
-
-
-@app.get("/")
-async def root():
-    return {
-        "service": "AI Оптимизатор карточек WB/OZON",
-        "version": "1.0.0",
-        "docs": "/docs",
-        "health": "/api/health",
-    }
 
 
 @app.get("/api/health")
