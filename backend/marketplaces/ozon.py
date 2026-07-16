@@ -47,13 +47,15 @@ class OzonAPI(BaseMarketplaceClient):
 
         products = []
         for item in data.get("result", {}).get("items", []):
-            products.append(MarketplaceProduct(
-                external_id=str(item.get("product_id", "")),
-                title=item.get("name", ""),
-                description=item.get("description", ""),
-                images=[],
-                marketplace="ozon",
-            ))
+            products.append(
+                MarketplaceProduct(
+                    external_id=str(item.get("product_id", "")),
+                    title=item.get("name", ""),
+                    description=item.get("description", ""),
+                    images=[],
+                    marketplace="ozon",
+                )
+            )
 
         return ProductListResponse(products=products, total=data.get("result", {}).get("total", 0))
 

@@ -18,13 +18,16 @@ class TestWildberriesAPI:
     @respx.mock
     async def test_get_products_success(self, api: WildberriesAPI) -> None:
         route = respx.post("https://content-api.wildberries.ru/content/v1/cards/cursor/list").mock(
-            return_value=httpx.Response(200, json={
-                "data": {
-                    "cards": [
-                        {"nmID": 123, "title": "Test", "description": "Desc", "images": []},
-                    ],
+            return_value=httpx.Response(
+                200,
+                json={
+                    "data": {
+                        "cards": [
+                            {"nmID": 123, "title": "Test", "description": "Desc", "images": []},
+                        ],
+                    },
                 },
-            }),
+            ),
         )
 
         result = await api.get_products()
@@ -38,11 +41,14 @@ class TestWildberriesAPI:
             return_value=httpx.Response(200, json={}),
         )
 
-        result = await api.update_card("123", UpdateCardRequest(
-            seo_title="New title",
-            seo_description="New desc",
-            infographics_triggers=[],
-        ))
+        result = await api.update_card(
+            "123",
+            UpdateCardRequest(
+                seo_title="New title",
+                seo_description="New desc",
+                infographics_triggers=[],
+            ),
+        )
         assert route.called
         assert result.success is True
 
@@ -52,9 +58,14 @@ class TestWildberriesAPI:
             return_value=httpx.Response(400, text="Bad Request"),
         )
 
-        result = await api.update_card("123", UpdateCardRequest(
-            seo_title="T", seo_description="D", infographics_triggers=[],
-        ))
+        result = await api.update_card(
+            "123",
+            UpdateCardRequest(
+                seo_title="T",
+                seo_description="D",
+                infographics_triggers=[],
+            ),
+        )
         assert result.success is False
         assert result.error is not None
 
@@ -80,12 +91,17 @@ class TestOzonAPI:
     @respx.mock
     async def test_get_products_success(self, api: OzonAPI) -> None:
         route = respx.post("https://api-seller.ozon.ru/v1/product/list").mock(
-            return_value=httpx.Response(200, json={
-                "result": {
-                    "items": [{"product_id": 456, "name": "Ozon Product", "description": "Desc"}],
-                    "total": 1,
+            return_value=httpx.Response(
+                200,
+                json={
+                    "result": {
+                        "items": [
+                            {"product_id": 456, "name": "Ozon Product", "description": "Desc"}
+                        ],
+                        "total": 1,
+                    },
                 },
-            }),
+            ),
         )
 
         result = await api.get_products()
@@ -99,11 +115,14 @@ class TestOzonAPI:
             return_value=httpx.Response(200, json={}),
         )
 
-        result = await api.update_card("456", UpdateCardRequest(
-            seo_title="Ozon title",
-            seo_description="Ozon desc",
-            infographics_triggers=[],
-        ))
+        result = await api.update_card(
+            "456",
+            UpdateCardRequest(
+                seo_title="Ozon title",
+                seo_description="Ozon desc",
+                infographics_triggers=[],
+            ),
+        )
         assert route.called
         assert result.success is True
 
@@ -126,7 +145,8 @@ class TestRetryTransport:
     async def test_gives_up_after_max_retries(self) -> None:
         mock_inner = AsyncMock(spec=httpx.AsyncBaseTransport)
         mock_inner.handle_async_request.return_value = httpx.Response(
-            429, request=httpx.Request("GET", "http://test.com"),
+            429,
+            request=httpx.Request("GET", "http://test.com"),
         )
 
         transport = RetryTransport(inner=mock_inner, max_retries=2, base_delay=0.01)

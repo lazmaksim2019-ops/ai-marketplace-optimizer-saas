@@ -6,7 +6,9 @@ from fastapi.testclient import TestClient
 class TestAnalyzeWithGemini:
     @patch("main._call_ai", new_callable=AsyncMock)
     def test_analyze_returns_valid_structure(
-        self, mock_call_ai: AsyncMock, client: TestClient,
+        self,
+        mock_call_ai: AsyncMock,
+        client: TestClient,
     ) -> None:
         mock_call_ai.return_value = {
             "seo_title": "Test title",
@@ -30,7 +32,10 @@ class TestAnalyzeWithGemini:
 
     @patch("main._call_ai", new_callable=AsyncMock)
     def test_analyze_with_image_file(
-        self, mock_call_ai: AsyncMock, client: TestClient, sample_image_bytes: bytes,
+        self,
+        mock_call_ai: AsyncMock,
+        client: TestClient,
+        sample_image_bytes: bytes,
     ) -> None:
         mock_call_ai.return_value = {
             "seo_title": "Test",
@@ -49,7 +54,9 @@ class TestAnalyzeWithGemini:
 
     @patch("main._call_ai", new_callable=AsyncMock)
     def test_analyze_with_image_url(
-        self, mock_call_ai: AsyncMock, client: TestClient,
+        self,
+        mock_call_ai: AsyncMock,
+        client: TestClient,
     ) -> None:
         mock_call_ai.return_value = {
             "seo_title": "Test",
@@ -70,7 +77,9 @@ class TestAnalyzeWithGemini:
 
     @patch("main._call_ai", new_callable=AsyncMock)
     def test_ozon_marketplace_returns_data(
-        self, mock_call_ai: AsyncMock, client: TestClient,
+        self,
+        mock_call_ai: AsyncMock,
+        client: TestClient,
     ) -> None:
         mock_call_ai.return_value = {
             "seo_title": "Ozon title with keywords and benefits",

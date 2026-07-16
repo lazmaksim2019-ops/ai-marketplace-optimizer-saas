@@ -29,11 +29,14 @@ class RetryTransport(httpx.AsyncBaseTransport):
             if response.status_code not in self._retryable_statuses or attempt == self._max_retries:
                 return response
 
-            delay = min(self._base_delay * (2 ** attempt), self._max_delay)
+            delay = min(self._base_delay * (2**attempt), self._max_delay)
             logger.warning(
                 "Retry %d/%d after %ds (status=%d, url=%s)",
-                attempt + 1, self._max_retries, delay,
-                response.status_code, request.url,
+                attempt + 1,
+                self._max_retries,
+                delay,
+                response.status_code,
+                request.url,
             )
             await asyncio.sleep(delay)
 
@@ -61,8 +64,7 @@ class BaseMarketplaceClient(ABC):
         )
 
     @abstractmethod
-    def _build_headers(self) -> dict[str, str]:
-        ...
+    def _build_headers(self) -> dict[str, str]: ...
 
     async def close(self) -> None:
         await self._client.aclose()

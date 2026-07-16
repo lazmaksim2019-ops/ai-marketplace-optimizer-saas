@@ -39,6 +39,7 @@ _frontend_dist = Path(__file__).resolve().parent.parent / "frontend" / "dist"
 _frontend_index = _frontend_dist / "index.html"
 
 if _frontend_dist.is_dir():
+
     @app.middleware("http")
     async def _serve_frontend(request: Request, call_next):
         response = await call_next(request)
@@ -48,6 +49,7 @@ if _frontend_dist.is_dir():
         if file_path.is_file():
             return FileResponse(str(file_path))
         return FileResponse(str(_frontend_index))
+
 
 SYSTEM_PROMPT_WB = """Ты — эксперт по SEO-оптимизации карточек товаров для Wildberries.
 Проанализируй изображение товара и его описание. Верни СТРОГО только JSON без пояснений:
@@ -151,7 +153,11 @@ async def health():
 @app.post(
     "/api/analyze",
     response_model=AnalyzeResponse,
-    responses={400: {"model": ErrorResponse}, 429: {"model": ErrorResponse}, 500: {"model": ErrorResponse}},
+    responses={
+        400: {"model": ErrorResponse},
+        429: {"model": ErrorResponse},
+        500: {"model": ErrorResponse},
+    },
 )
 @limiter.limit("10/minute")
 async def analyze(
@@ -181,4 +187,5 @@ async def analyze(
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

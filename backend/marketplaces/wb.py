@@ -39,13 +39,15 @@ class WildberriesAPI(BaseMarketplaceClient):
 
         products = []
         for card in data.get("data", {}).get("cards", []):
-            products.append(MarketplaceProduct(
-                external_id=str(card.get("nmID", "")),
-                title=card.get("title", ""),
-                description=card.get("description", ""),
-                images=[img.get("url", "") for img in card.get("images", [])],
-                marketplace="wb",
-            ))
+            products.append(
+                MarketplaceProduct(
+                    external_id=str(card.get("nmID", "")),
+                    title=card.get("title", ""),
+                    description=card.get("description", ""),
+                    images=[img.get("url", "") for img in card.get("images", [])],
+                    marketplace="wb",
+                )
+            )
 
         return ProductListResponse(products=products, total=len(products))
 
