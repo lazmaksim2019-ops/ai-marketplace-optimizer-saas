@@ -193,15 +193,17 @@ npm run dev
    - **Static Site** — React фронтенд (Vite build)
 6. Укажите `GEMINI_API_KEY` в Environment Variables
 
-Или деплойте по отдельности:
+Или деплойте по отдельности (без Blueprint):
 
-**Бэкенд:**
-- New Web Service → select repo → root: `backend/`
+**Бэкенд (Web Service):**
+- Repository root: оставьте пустым (или укажите `backend/`)
 - Build: `pip install -r requirements.txt`
-- Start: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+- Start Command: `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
+  (Procfile в корне репы настроит это автоматически)
+- Add env: `GEMINI_API_KEY`
 
-**Фронтенд:**
-- New Static Site → select repo → root: `frontend/`
+**Фронтенд (Static Site):**
+- Repository root: `frontend/`
 - Build: `npm install && npm run build`
 - Publish: `dist`
 - Add env: `VITE_API_URL=https://your-api-service.onrender.com/api`
