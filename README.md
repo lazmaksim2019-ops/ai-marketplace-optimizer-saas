@@ -3,6 +3,9 @@
 </p>
 
 <p align="center">
+  <a href="https://ai-marketplace-optimizer-saas.onrender.com/">
+    <img src="https://img.shields.io/badge/🚀_Live_Demo-Open_App-4285F4?style=for-the-badge&logo=render&logoColor=white"/>
+  </a>
   <img src="https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
   <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black"/>
@@ -10,6 +13,7 @@
   <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
   <img src="https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/lazmaksim2019-ops/ai-marketplace-optimizer-saas/ci.yml?branch=master&style=for-the-badge&logo=github&label=CI"/>
 </p>
 
 ---
@@ -199,6 +203,13 @@ npm run dev
 
 Фронтенд доступен на `http://localhost:5173`, прокси на бэкенд настроен автоматически.
 
+### 🧪 Запуск тестов
+
+```bash
+cd backend
+pytest -v --tb=short
+```
+
 ### Деплой на Render (один сервис)
 
 Проект содержит готовую конфигурацию `render.yaml` для деплоя через Render Blueprint —
@@ -268,8 +279,8 @@ Proprietary / Closed Source. Все права защищены.
 
 **Александр Лазаренко** — Fullstack Developer (React + FastAPI + AI)
 
-[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/your_nickname)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/your-username)
+[![Telegram](https://img.shields.io/badge/Telegram-26A5E4?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/lazalex81)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/lazmaksim2019-ops)
 
 ---
 

@@ -14,3 +14,6 @@ backend/*_stdout*.txt
 backend/*_stderr*.txt
 .DS_Store
 frontend/src/assets/
+main.py
+requirements.txt
+rules.md
