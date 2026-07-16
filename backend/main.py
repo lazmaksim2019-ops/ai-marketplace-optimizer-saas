@@ -3,11 +3,15 @@ import logging
 from io import BytesIO
 
 import httpx
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form
+from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from google import genai
 from google.genai import types
 from PIL import Image
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from slowapi.util import get_remote_address
 
 from config import settings
 from schemas import AnalyzeResponse, ErrorResponse
@@ -15,7 +19,12 @@ from schemas import AnalyzeResponse, ErrorResponse
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+limiter = Limiter(key_func=get_remote_address, default_limits=[])
+
 app = FastAPI(title="AI Оптимизатор карточек WB/OZON", version="1.0.0")
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 app.add_middleware(
     CORSMiddleware,
@@ -129,12 +138,16 @@ async def health():
     response_model=AnalyzeResponse,
     responses={400: {"model": ErrorResponse}, 429: {"model": ErrorResponse}, 500: {"model": ErrorResponse}},
 )
+@limiter.limit("10/minute")
 async def analyze(
+    request: Request,
     image_url: str | None = Form(None),
     file: UploadFile | None = File(None),
     description: str = Form(...),
     marketplace: str = Form("wb"),
 ):
+    if marketplace not in ("wb", "ozon"):
+        raise HTTPException(status_code=422, detail="marketplace must be 'wb' or 'ozon'")
     try:
         file_bytes: bytes | None = None
         mime_type: str | None = None
