@@ -5,8 +5,9 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge"/>
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white"/>
-  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white"/>
+  <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black"/>
   <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white"/>
   <img src="https://img.shields.io/badge/Gemini-8E75B2?style=for-the-badge&logo=googlebard&logoColor=white"/>
   <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwind-css&logoColor=white"/>
 </p>
@@ -15,7 +16,11 @@
 
 # AI Marketplace Optimizer
 
+<<<<<<< HEAD
 ### Мультимодальный ИИ-SaaS сервис для селлеров на маркетплейсах. SEO-генерация, анализ изображений, детекция триггеров инфографики. Интеграция с API Wildberries и Ozon.
+=======
+### Multimodal AI SaaS for Marketplace Sellers. SEO-generation, Image Analysis, Infographic Trigger Detection. Modular architecture with extensible Wildberries & Ozon API integration layer.
+>>>>>>> 6906e2a (Add Render deployment config, fix frontend api URL, update README for portfolio (fix Next.js→Vite, add marketplace API extension docs))
 
 **AI Marketplace Optimizer** — полнофункциональное fullstack SaaS-приложение для мультимодальной генерации и SEO-оптимизации карточек товаров под Wildberries и Ozon на базе Google Gemini.
 
@@ -42,7 +47,8 @@
 
 ### Enterprise-Ready Архитектура
 - **Асинхронное взаимодействие** — FastAPI async endpoints
-- **SOCKS5-прокси** — стабильный доступ к API в РФ
+- **Модульная архитектура** — готовый слой для интеграции с API Wildberries и Ozon (базовые HTTP-клиенты на httpx, Pydantic-схемы, middleware)
+- **SOCKS5-прокси** — стабильный доступ к Gemini API в РФ
 - **Pydantic v2-валидация** — строгий контроль схем, предотвращение галлюцинаций
 - **Graceful error handling** — обработка rate limiting (429) с понятными сообщениями
 
@@ -54,18 +60,50 @@
 
 ---
 
+## Легкая интеграция с API Wildberries и Ozon
+
+Архитектура спроектирована так, что подключение реальных API маркетплейсов не требует переписывания существующего кода. Достаточно добавить:
+
+```python
+# backend/marketplaces/wb.py
+class WildberriesAPI:
+    async def get_products(self): ...
+    async def update_card(self, nm_id, seo_data): ...
+
+# backend/marketplaces/ozon.py  
+class OzonAPI:
+    async def get_products(self): ...
+    async def update_card(self, product_id, seo_data): ...
+```
+
+**Что уже есть для интеграции:**
+- Асинхронный HTTP-клиент (httpx) в зависимостях
+- Pydantic-схемы для валидации запросов/ответов
+- Middleware для авторизации (API-ключи, Bearer token)
+- CORS настроен для любых origins
+
+**Типовой сценарий интеграции:**
+1. Продавец вводит API-ключи маркетплейса в UI
+2. Фронтенд запрашивает список товаров продавца через бэкенд
+3. Пользователь выбирает товар → AI анализирует → готовый SEO-текст
+4. Кнопка «Применить к карточке» отправляет результат напрямую в API маркетплейса
+
+---
+
 ## Архитектура системы
 
 ```
 ┌─────────────┐     ┌──────────────┐     ┌──────────────────┐
-│  Next.js UI │────>│  FastAPI     │────>│  Google Gemini   │
-│  (Frontend) │<────│  Gateway     │<────│  Vision + Text   │
-└─────────────┘     └──────────────┘     └──────────────────┘
+│  React +    │────>│  FastAPI     │────>│  Google Gemini   │
+│  Vite + TS  │<────│  Gateway     │<────│  Vision + Text   │
+│  (Frontend) │     │  (Backend)   │     └──────────────────┘
+└─────────────┘     └──────┬───────┘
                            │
-                    ┌──────┴──────┐
-                    │  Pydantic   │
-                    │  Validation │
-                    └─────────────┘
+                    ┌──────┴──────┐          ┌──────────────────┐
+                    │  Pydantic   │          │  Wildberries API │
+                    │  Validation │──────────│  Ozon Seller API │
+                    └─────────────┘          │  (extensible)    │
+                                            └──────────────────┘
 ```
 
 ```
@@ -75,7 +113,7 @@
 │   ├── schemas.py              # Pydantic-схемы запросов и ответов
 │   └── requirements.txt        # Зависимости Python
 │
-├── frontend/                   # Next.js + TypeScript + Tailwind
+├── frontend/                   # React + Vite + TypeScript + Tailwind
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── Dashboard.tsx        # Главный экран
@@ -88,6 +126,7 @@
 │   ├── vite.config.ts          # Vite + Tailwind + Proxy на бэкенд
 │   └── package.json
 │
+├── render.yaml                 # Конфигурация деплоя на Render
 ├── .gitattributes
 └── README.md
 ```
@@ -98,14 +137,17 @@
 
 | Уровень | Технологии |
 |---------|-----------|
-| **Frontend** | Next.js 19, TypeScript, Tailwind CSS v4, Lucide React |
+| **Frontend** | React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React |
 | **Backend** | Python 3.11+, FastAPI (Async), Pydantic v2, httpx |
-| **AI** | Google Gemini 3.1 Flash Lite (мультимодальное ядро) |
+| **AI** | Google Gemini (мультимодальное ядро Vision + Text) |
 | **Infrastructure** | SOCKS5 Proxy для стабильного доступа к API в РФ |
+| **Deploy** | Render (Blueprint-конфигурация, готовый render.yaml) |
 
 ---
 
 ## Быстрый старт
+
+### Локальная разработка
 
 ```bash
 # Клонирование
@@ -142,6 +184,32 @@ npm run dev
 
 Фронтенд доступен на `http://localhost:5173`, прокси на бэкенд настроен автоматически.
 
+### Деплой на Render
+
+Проект содержит готовую конфигурацию `render.yaml` для деплоя через Render Blueprint:
+
+1. Форкните репозиторий на GitHub
+2. Зайдите в [Render Dashboard](https://dashboard.render.com/)
+3. Нажмите **New → Blueprint**
+4. Подключите GitHub-репозиторий
+5. Render автоматически создаст 2 сервиса:
+   - **Web Service** — FastAPI бэкенд (Python)
+   - **Static Site** — React фронтенд (Vite build)
+6. Укажите `GEMINI_API_KEY` в Environment Variables
+
+Или деплойте по отдельности:
+
+**Бэкенд:**
+- New Web Service → select repo → root: `backend/`
+- Build: `pip install -r requirements.txt`
+- Start: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+
+**Фронтенд:**
+- New Static Site → select repo → root: `frontend/`
+- Build: `npm install && npm run build`
+- Publish: `dist`
+- Add env: `VITE_API_URL=https://your-api-service.onrender.com/api`
+
 ---
 
 ## API
@@ -176,8 +244,10 @@ npm run dev
 - [x] MVP: генерация SEO-текста + триггеры инфографики
 - [x] Дифференциация стратегий Wildberries / Ozon
 - [x] Обработка rate limiting (429)
+- [x] Готовая архитектура для интеграции с API Wildberries и Ozon
 - [ ] Rich-контент (генерация HTML-лендинга для Ozon)
 - [ ] Генерация alt-тегов для изображений
+- [ ] Подключение реальных API Wildberries и Ozon
 - [ ] История запросов (база данных)
 - [ ] Анализ конкурентов (парсинг топ-10 карточек)
 
