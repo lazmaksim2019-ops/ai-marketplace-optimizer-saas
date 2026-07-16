@@ -25,7 +25,7 @@ class WildberriesAPI(BaseMarketplaceClient):
             headers["Authorization"] = f"Bearer {self.api_key}"
         return headers
 
-    async def get_products(self, limit: int = 100, offset: int = 0) -> ProductListResponse:
+    async def get_products(self, limit: int = 100, _offset: int = 0) -> ProductListResponse:
         payload = {
             "sort": {"cursor": {"limit": limit}},
             "filter": {"withPhoto": -1},

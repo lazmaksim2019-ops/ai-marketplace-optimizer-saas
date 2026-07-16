@@ -3,9 +3,8 @@ import logging
 from io import BytesIO
 
 import httpx
-from fastapi import FastAPI, HTTPException, UploadFile, File, Form, Request
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from google import genai
 from google.genai import types
 from PIL import Image
@@ -39,7 +38,7 @@ SYSTEM_PROMPT_WB = """Ты — эксперт по SEO-оптимизации к
 
 {
   "seo_title": "Заголовок до 60 символов, без спама и дублирования слов, строгий минимализм",
-  "seo_description": "Оптимизированное описание до 3000 символов. Вплети популярные поисковые запросы и синонимы (например: свитер, джемпер, пуловер, кофта) органично в читаемый текст. Избегай спама ключей через запятую.",
+  "seo_description": "Оптимизированное описание до 3000 символов. Вплети популярные поисковые запросы и синонимы (например: свитер, джемпер, пуловер, кофта) органично в читаемый текст. Избегай спама ключей через запятую.",  # noqa: E501
   "infographics_triggers": ["Триггер 1 для обложки (макс 25 символов)", "Триггер 2", "Триггер 3"],
   "marketing_tips": "Советы по улучшению продаж на Wildberries"
 }"""
@@ -121,11 +120,21 @@ async def _call_ai(
             raise HTTPException(
                 status_code=429,
                 detail="Лимит бесплатного API исчерпан. Подождите 60 секунд и повторите попытку.",
-            )
+            ) from None
         raise
 
     raw = json.loads(response.text)
     return AnalyzeResponse(**raw)
+
+
+@app.get("/")
+async def root():
+    return {
+        "service": "AI Оптимизатор карточек WB/OZON",
+        "version": "1.0.0",
+        "docs": "/docs",
+        "health": "/api/health",
+    }
 
 
 @app.get("/api/health")
@@ -140,7 +149,7 @@ async def health():
 )
 @limiter.limit("10/minute")
 async def analyze(
-    request: Request,
+    request: Request,  # noqa: ARG001 — required by slowapi
     image_url: str | None = Form(None),
     file: UploadFile | None = File(None),
     description: str = Form(...),
@@ -161,7 +170,7 @@ async def analyze(
         raise
     except Exception as e:
         logger.exception("Analysis failed")
-        raise HTTPException(status_code=500, detail=f"Ошибка анализа: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Ошибка анализа: {str(e)}") from None
 
 
 if __name__ == "__main__":

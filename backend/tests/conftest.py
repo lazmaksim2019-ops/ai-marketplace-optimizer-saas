@@ -12,6 +12,7 @@ def client() -> TestClient:
 @pytest.fixture
 def sample_image_bytes() -> bytes:
     from io import BytesIO
+
     from PIL import Image
 
     img = Image.new("RGB", (100, 100), color="red")
