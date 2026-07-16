@@ -16,11 +16,7 @@
 
 # AI Marketplace Optimizer
 
-<<<<<<< HEAD
-### Мультимодальный ИИ-SaaS сервис для селлеров на маркетплейсах. SEO-генерация, анализ изображений, детекция триггеров инфографики. Интеграция с API Wildberries и Ozon.
-=======
 ### Multimodal AI SaaS for Marketplace Sellers. SEO-generation, Image Analysis, Infographic Trigger Detection. Modular architecture with extensible Wildberries & Ozon API integration layer.
->>>>>>> 6906e2a (Add Render deployment config, fix frontend api URL, update README for portfolio (fix Next.js→Vite, add marketplace API extension docs))
 
 **AI Marketplace Optimizer** — полнофункциональное fullstack SaaS-приложение для мультимодальной генерации и SEO-оптимизации карточек товаров под Wildberries и Ozon на базе Google Gemini.
 
@@ -269,3 +265,4 @@ Proprietary / Closed Source. Все права защищены.
 ---
 
 > *«AI не заменит селлера. Но селлер, использующий AI, заменит того, кто им не пользуется.»*
+
