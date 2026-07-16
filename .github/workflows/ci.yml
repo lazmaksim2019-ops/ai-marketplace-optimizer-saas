@@ -36,7 +36,7 @@ jobs:
           ruff format --check .
 
       - name: Run tests with coverage
-        run: pytest -v --tb=short --cov=app --cov-report=xml --cov-report=term
+        run: pytest -v --tb=short --cov=. --cov-report=xml --cov-report=term
         env:
           GEMINI_API_KEY: test-key
 
@@ -70,6 +70,17 @@ jobs:
 
       - name: Lint
         run: npm run lint
+
+      - name: Run tests with coverage
+        run: npm run test:coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: frontend/coverage/lcov.info
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+          verbose: true
 
       - name: Build
         run: npm run build
