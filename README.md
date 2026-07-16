@@ -207,9 +207,8 @@ npm run dev
 1. Зайдите в [Render Dashboard](https://dashboard.render.com/) → **New + Web Service**
 2. Подключите GitHub-репозиторий
 3. Настройки:
-   - **Name:** `ai-marketplace-optimizer`
    - **Runtime:** `Python`
-   - **Build Command:** `cd frontend && npm ci && npm run build && cd ../backend && pip install -r requirements.txt`
+   - **Build Command:** `pip install -r requirements.txt` (фронтенд уже собран в репозитории)
    - **Start Command:** `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT`
 4. Добавьте переменную окружения: `GEMINI_API_KEY`
 
